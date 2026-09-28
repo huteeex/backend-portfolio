@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from './Icon.astro';
+import ProjectDemo from './ProjectDemo';
+import { projects, type Lang, type Project } from '../data/content';
+import '../styles/pages.css';
+interface Props { lang: Lang; project: Project; }
+const { lang, project } = Astro.props;
+const en = lang === 'en';
+const root = en ? '/en/' : '/';
+const index = projects[lang].findIndex(item => item.slug === project.slug);
+const next = projects[lang][(index + 1) % projects[lang].length];
+---
+<Layout lang={lang} title={`${project.title} - ${en ? 'Concept' : 'Концепт'}`} description={project.summary} section="projects">
+  <article class="case-page page-width">
+    <a href={`${root}#work`} class="back-link"><Icon name="back" size={15} />{en ? 'Back to experiments' : 'К экспериментам'}</a>
+    <header class="case-header"><div class="case-meta"><span class="eyebrow">{project.number} / {project.category}</span><span class="concept-tag">{en ? 'Concept' : 'Концепт'}</span></div><h1>{project.title}</h1><p>{project.summary}</p></header>
+    <div class:list={['case-demo', `case-demo-${project.slug}`]}><ProjectDemo kind={project.slug} lang={lang} expanded client:load /></div>
+    <p class="case-note">{en ? 'This demo runs in the browser without a backend. The backend plan is outlined below.' : 'Демо работает в браузере, без backend. Ниже - план серверной части.'}</p>
+    <div class="case-content">
+      <aside class="case-index"><span class="eyebrow">{en ? 'CONTENTS' : 'СОДЕРЖАНИЕ'}</span><a href="#context">{en ? 'Task' : 'Задача'}</a><a href="#approach">{en ? 'Plan' : 'План'}</a><a href="#tradeoffs">{en ? 'Decisions' : 'Решения'}</a><a href="#outcome">{en ? 'Expected behaviour' : 'Как будет работать'}</a></aside>
+      <div class="case-prose">
+        <section id="context"><span class="prose-number">01</span><h2>{en ? 'Task' : 'Задача'}</h2><p>{project.context}</p></section>
+        <section id="approach"><span class="prose-number">02</span><h2>{en ? 'Implementation plan' : 'План реализации'}</h2><ol class="approach-list">{project.approach.map(item => <li>{item}</li>)}</ol><ol class="flow-diagram" aria-label={en ? 'Proposed system flow' : 'Предлагаемая схема работы'}>{project.flow.map((step, i) => <li><span>{String(i + 1).padStart(2, '0')}</span>{step}</li>)}</ol></section>
+        <section id="tradeoffs"><span class="prose-number">03</span><h2>{en ? 'Design decisions' : 'Выбор подхода'}</h2><p>{project.decision}</p><div class="failure-note"><span class="failure-mark" aria-hidden="true">↳</span><div><h3>{en ? 'Errors and retries' : 'Ошибки и повторы'}</h3><p>{project.failure}</p></div></div></section>
+        <section id="outcome"><span class="prose-number">04</span><h2>{en ? 'Expected behaviour' : 'Как это будет работать'}</h2><p>{project.outcome}</p><details class="interview-details"><summary>{en ? 'What to check' : 'Что проверить'}<span aria-hidden="true">+</span></summary><ul>{project.questions.map(question => <li>{question}</li>)}</ul></details></section>
+      </div>
+    </div>
+    <a class="next-project" href={`${root}projects/${next.slug}/`}><div><span class="eyebrow">{en ? 'NEXT EXPERIMENT' : 'СЛЕДУЮЩИЙ ЭКСПЕРИМЕНТ'}</span><h2>{next.title}</h2></div><Icon name="arrow" size={27} /></a>
+  </article>
+</Layout>

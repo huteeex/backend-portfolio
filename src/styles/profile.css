@@ -1,0 +1,47 @@
+.contact-links { margin-top: 23px; border-top: 1px solid var(--line); }
+.contact-row { display: flex; align-items: center; border-bottom: 1px solid var(--line); gap: 5px; }
+.contact-address { display: flex; align-items: center; gap: 13px; flex: 1; min-width: 0; padding: 14px 0; }
+.contact-channel-icon { display: grid; place-items: center; width: 37px; height: 37px; flex: 0 0 37px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: var(--bg); transition: color .2s, translate .2s; }
+.contact-address-text { min-width: 0; flex: 1; }
+.contact-address-text > span { display: block; font-size: 10px; color: var(--muted); }
+.contact-address-text strong { display: block; font-size: 12px; font-weight: 500; overflow-wrap: anywhere; }
+.contact-address > svg { color: var(--muted); }
+.contact-address:hover .contact-channel-icon { color: var(--accent); translate: 0 -2px; }
+.contact-copy { display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); }
+.contact-copy:hover { background: var(--soft); color: var(--accent); }
+.contact-dialog .copy-feedback { min-height: 19px; margin: 9px 0 13px; font-size: 11px; color: var(--accent); }
+.footer-contacts { display: flex; flex-wrap: wrap; gap: 18px; }
+.footer-contacts a:hover { color: var(--accent); }
+.identity-text { max-width: 230px; }
+.about-location { display: inline-flex; gap: 6px; color: var(--muted); font-size: 11px; margin-top: 14px; }
+.skill-groups { display: grid; gap: 16px; margin-top: 28px; }
+.skill-group { display: grid; grid-template-columns: 96px 1fr; gap: 14px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 11px; }
+.skill-group > span { color: var(--muted); }
+.skill-group > p { font-size: 11px; line-height: 1.8; margin: 0; color: var(--text); }
+.about-copy .education-note { font-size: 11px; margin-top: 28px; padding-left: 14px; border-left: 2px solid var(--line); color: var(--text); }
+.education-note > span { display: block; color: var(--muted); font-size: 10px; margin-top: 5px; }
+.real-case-flow { margin-top: 40px; padding: 28px; border-radius: 13px; background: var(--soft); }
+.real-case-flow .flow-diagram { margin-top: 17px; }
+.real-case-flow .flow-diagram li { padding: 18px; font-size: 12px; }
+.case-tech { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 24px; padding: 0; list-style: none; font-size: 11px; color: var(--muted); }
+.case-repo { margin-top: 25px; color: var(--accent); }
+.case-sources { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.case-sources a { display: inline-flex; align-items: center; gap: 10px; width: fit-content; color: var(--muted); font-size: 12px; }
+.case-sources a:hover { color: var(--accent); }
+.resume-document { overflow-wrap: anywhere; }
+.resume-document > .resume-block-label { margin-top: 18px; }
+.resume-block-contacts a { color: #86472f; text-decoration: underline; text-decoration-color: #cdb4a8; text-underline-offset: 3px; }
+.resume-block-contacts a:hover { text-decoration-color: currentColor; }
+@media (max-width: 620px) {
+  .contact-dialog { padding: 22px 18px; }
+  .contact-address { gap: 9px; }
+  .contact-channel-icon { width: 30px; height: 34px; flex-basis: 30px; }
+  .contact-address-text strong { font-size: 11px; }
+  .contact-copy { flex-basis: 30px; width: 30px; }
+  .site-footer { flex-wrap: wrap; }
+  .footer-contacts { order: 3; flex-basis: 100%; font-size: 10px; gap: 22px; }
+  .identity-text { max-width: 170px; }
+  .skill-group { grid-template-columns: 78px 1fr; gap: 10px; }
+  .real-case-flow { padding: 18px; }
+  .real-case-flow .flow-diagram li { padding: 12px; font-size: 10px; }
+}

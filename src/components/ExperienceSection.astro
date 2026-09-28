@@ -1,0 +1,37 @@
+---
+import { experience } from '../data/experience';
+import type { Lang } from '../data/content';
+import Icon from './Icon.astro';
+import '../styles/experience.css';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const en = lang === 'en';
+---
+<section class="experience-section page-width" id="experience" aria-labelledby="experience-title">
+  <span id="code" class="legacy-anchor" aria-hidden="true"></span>
+  <div class="section-heading"><h2 id="experience-title">{en ? 'Experience' : 'Опыт'}</h2><span class="section-aside">{en ? 'Web services and automation' : 'Веб-сервисы и автоматизация'}</span></div>
+  <div class="experience-layout">
+    <div class="experience-intro">
+      <span class="eyebrow">BACKEND</span>
+      <h3>{en ? 'What I worked on' : 'С чем работал'}</h3>
+      <p>{en ? 'User accounts, requests, documents and Telegram bots. Here is how I handled access, data storage and service integrations.' : 'Личные кабинеты, заявки, документы и Telegram-боты. Рассказываю, как организовал доступ, хранение данных и связь между сервисами.'}</p>
+      <div class="experience-path" aria-hidden="true"><span>request</span><i>→</i><span>logic</span><i>→</i><span>data</span></div>
+      <a class="subtle-link" href={en ? '/en/resume/' : '/resume/'}>{en ? 'View résumé' : 'Посмотреть резюме'}<Icon name="arrow" size={14} /></a>
+    </div>
+    <div class="experience-list">
+      {experience[lang].map((item, index) => <details class="experience-item" name="experience" open={index === 0}>
+        <summary>
+          <span class="experience-number" aria-hidden="true">0{index + 1}</span>
+          <span class="experience-summary"><span class="experience-title">{item.title}</span><span class="experience-description">{item.summary}</span></span>
+          <span class="experience-toggle" aria-hidden="true"><i></i><i></i></span>
+        </summary>
+        <div class="experience-body">
+          <p class="experience-stack">{item.stack}</p>
+          <p class="experience-context">{item.context}</p>
+          <div class="experience-decision"><div><h4>{en ? 'The task' : 'С чем столкнулся'}</h4><p>{item.challenge}</p></div><div><h4>{en ? 'My approach' : 'Как решал'}</h4><p>{item.solution}</p></div></div>
+          <p class="experience-takeaway"><span aria-hidden="true">↳</span>{item.takeaway}</p>
+        </div>
+      </details>)}
+    </div>
+  </div>
+</section>

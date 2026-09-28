@@ -1,0 +1,53 @@
+---
+import { statSync } from 'node:fs';
+import { join } from 'node:path';
+import Layout from '../layouts/Layout.astro';
+import { getProfile } from '../data/profile';
+import Icon from './Icon.astro';
+import documentData from '../../content/resume-draft.json';
+import '../styles/pages.css';
+interface Props { lang: 'ru' | 'en'; }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const profile = getProfile(lang);
+const linkParts = (text: string) => text.split(/(https:\/\/[^\s|]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g).map(part => ({ text: part, href: part.startsWith('https://') ? part : /^[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}$/.test(part) ? 'mailto:' + part : null }));
+const root = en ? '/en/' : '/';
+const blocks = documentData.languages[lang].blocks;
+const groups: { kind: 'list' | 'block'; items: typeof blocks }[] = [];
+for (const block of blocks) {
+  const previous = groups.at(-1);
+  if (block.kind === 'bullet' && previous?.kind === 'list') previous.items.push(block);
+  else groups.push({ kind: block.kind === 'bullet' ? 'list' : 'block', items: [block] });
+}
+const pdf = `/downloads/resume-${lang}.pdf`;
+const docx = `/downloads/resume-${lang}.docx`;
+const size = (file: string) => `${Math.ceil(statSync(join(process.cwd(), 'public', file.slice(1))).size / 1024)} ${en ? 'KB' : 'КБ'}`;
+---
+<Layout lang={lang} title={`${profile.name} - ${en ? 'Résumé' : 'Резюме'}`} section="resume">
+  <div class="resume-page page-width">
+    <a href={root} class="back-link"><Icon name="back" size={15} />{en ? 'Back home' : 'На главную'}</a>
+    <header class="resume-header"><span class="eyebrow">{en ? 'PDF / WORD' : 'PDF / WORD'}</span><h1>{en ? 'Résumé' : 'Резюме'}</h1><p>{en ? 'Experience, skills and education. Available in Russian and English.' : 'Опыт, навыки и образование. Версии на русском и английском.'}</p></header>
+    <div class="resume-layout">
+      <aside class="download-panel"><span class="eyebrow">{en ? 'DOWNLOAD' : 'СКАЧАТЬ'}</span><div class="document-language">{en ? 'English version' : 'Русская версия'}<span class="draft-badge">{en ? '1 PAGE' : '1 СТРАНИЦА'}</span></div><a class="download-button" href={pdf} download><Icon name="file" size={20} /><span>{en ? 'Download PDF' : 'Скачать PDF'}<small>{size(pdf)} · {en ? 'For reading' : 'Для чтения'}</small></span><Icon name="down" size={16} /></a><a class="download-button" href={docx} download><Icon name="file" size={20} /><span>{en ? 'Download Word' : 'Скачать Word'}<small>{size(docx)} · {en ? 'Editable .docx' : 'Редактируемый .docx'}</small></span><Icon name="down" size={16} /></a><button class="pdf-toggle text-link" data-pdf-toggle data-label-open={en ? 'Preview PDF' : 'Посмотреть PDF'} data-label-close={en ? 'Hide PDF preview' : 'Скрыть PDF'} aria-expanded="false" aria-controls="pdf-viewer"><span>{en ? 'Preview PDF' : 'Посмотреть PDF'}</span><Icon name="diagonal" size={15} /></button><a class="other-language subtle-link" href={en ? '/resume/' : '/en/resume/'}><Icon name="globe" size={15} />{en ? 'Русская версия' : 'English version'}</a><p class="download-note">{en ? 'The page, PDF and Word file contain the same text.' : 'На странице, в PDF и Word одинаковый текст.'}</p></aside>
+      <section class="resume-document" aria-label={en ? 'Résumé content' : 'Содержание резюме'}>
+        {groups.map(group => group.kind === 'list' ? <ul class="resume-experience-list">{group.items.map(block => <li><strong>{block.text.slice(0, block.text.indexOf(':') + 1)}</strong>{block.text.slice(block.text.indexOf(':') + 1)}</li>)}</ul> : group.items.map(block => block.kind === 'heading' ? <h3>{block.text}</h3> : block.kind === 'name' ? <h2>{block.text}</h2> : <p class={`resume-block-${block.kind}`}>{linkParts(block.text).map(part => part.href ? <a href={part.href} target={part.href.startsWith('https://') ? '_blank' : undefined} rel={part.href.startsWith('https://') ? 'noopener noreferrer' : undefined}>{part.text}</a> : part.text)}</p>))}
+      </section>
+    </div>
+    <section id="pdf-viewer" class="pdf-viewer" hidden><div class="pdf-viewer-toolbar"><span>{en ? 'PDF preview' : 'Просмотр PDF'}</span><a href={pdf} target="_blank" rel="noopener">{en ? 'Open in a new tab' : 'Открыть отдельно'}<Icon name="diagonal" size={14} /></a></div><div class="pdf-page-preview"><img src={`/downloads/resume-${lang}-preview.png`} width="1200" height="1698" loading="lazy" alt={en ? 'Page 1 of the résumé PDF. The complete text is available above.' : 'Страница 1 резюме в PDF. Полный текст доступен выше.'} /></div><p>{en ? 'Page 1 of 1. Open the PDF to copy text or print.' : 'Страница 1 из 1. Чтобы скопировать текст или распечатать резюме, открой PDF.'}</p></section>
+  </div>
+  <script>
+    const pdfButton = document.querySelector<HTMLButtonElement>('[data-pdf-toggle]');
+    const pdfViewer = document.querySelector<HTMLElement>('#pdf-viewer');
+    pdfButton?.addEventListener('click', () => {
+      if (!pdfViewer) return;
+      const open = pdfButton.getAttribute('aria-expanded') !== 'true';
+      pdfButton.setAttribute('aria-expanded', String(open));
+      pdfViewer.hidden = !open;
+      const text = pdfButton.querySelector('span');
+      if (text) text.textContent = (open ? pdfButton.dataset.labelClose : pdfButton.dataset.labelOpen) || '';
+      if (open) {
+        pdfViewer.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+      }
+    });
+  </script>
+</Layout>

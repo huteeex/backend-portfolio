@@ -1,0 +1,186 @@
+{
+  "status": "review",
+  "accent": "#b74b34",
+  "languages": {
+    "ru": {
+      "document_title": "Владислав Калашников Резюме",
+      "language_tag": "ru-RU",
+      "blocks": [
+        {
+          "kind": "name",
+          "text": "Владислав Калашников"
+        },
+        {
+          "kind": "role",
+          "text": "Backend-разработчик - Python / TypeScript"
+        },
+        {
+          "kind": "contacts",
+          "text": "Санкт-Петербург  |  kalashnikov78ru@gmail.com"
+        },
+        {
+          "kind": "contacts",
+          "text": "https://t.me/huteex  |  https://github.com/huteeex"
+        },
+        {
+          "kind": "heading",
+          "text": "О себе"
+        },
+        {
+          "kind": "body",
+          "text": "Пишу серверную часть веб-приложений на Python и TypeScript. Работал с системами заявок, записью на услуги, документами и Telegram-ботами. Проектирую базы данных, разрабатываю API и подключаю их к интерфейсу."
+        },
+        {
+          "kind": "heading",
+          "text": "Навыки"
+        },
+        {
+          "kind": "body",
+          "text": "Основной стек: Python, Django, Django REST Framework, TypeScript, Node.js, PostgreSQL, SQL."
+        },
+        {
+          "kind": "body",
+          "text": "Для запуска: Docker, Docker Compose, Nginx, Git."
+        },
+        {
+          "kind": "body",
+          "text": "Также работал с Go, C#, React, Next.js и Socket.io."
+        },
+        {
+          "kind": "heading",
+          "text": "Проектная практика"
+        },
+        {
+          "kind": "bullet",
+          "text": "API и доступ: разрабатывал регистрацию, авторизацию, личные кабинеты и админпанели. Настраивал права пользователей по ролям и обновление JWT-токенов."
+        },
+        {
+          "kind": "bullet",
+          "text": "Базы данных: проектировал таблицы и связи в PostgreSQL. Писал запросы для поиска и фильтрации, SQL-функции для расчёта стоимости и комиссий. В приложении магазина добавлял учёт продаж и остатков."
+        },
+        {
+          "kind": "bullet",
+          "text": "Документы: сделал загрузку файлов и хранение метаданных. Связал документы с пользователями и группами, добавил управление записями через API."
+        },
+        {
+          "kind": "bullet",
+          "text": "Запись на услуги: разработал расписание, выбор мастера и времени, статусы записи. Добавил админпанель для управления услугами, клиентами и заявками."
+        },
+        {
+          "kind": "bullet",
+          "text": "Боты и интеграции: писал Telegram-ботов на Python и Go, обработчики команд и автоматические ответы. Подключал внешние API, настраивал уведомления и обмен сообщениями через Socket.io."
+        },
+        {
+          "kind": "bullet",
+          "text": "Развёртывание и доработка: готовил приложения к запуску с Docker и Nginx. Дорабатывал сайты для малого бизнеса, исправлял формы и отображение страниц на разных экранах."
+        },
+        {
+          "kind": "heading",
+          "text": "Образование"
+        },
+        {
+          "kind": "body",
+          "text": "СПбПУ Петра Великого, 2026. Среднее профессиональное образование, информационные системы и программирование."
+        },
+        {
+          "kind": "heading",
+          "text": "Языки"
+        },
+        {
+          "kind": "body",
+          "text": "Русский - родной."
+        }
+      ]
+    },
+    "en": {
+      "document_title": "Vladislav Kalashnikov Resume",
+      "language_tag": "en-US",
+      "blocks": [
+        {
+          "kind": "name",
+          "text": "Vladislav Kalashnikov"
+        },
+        {
+          "kind": "role",
+          "text": "Backend Developer - Python / TypeScript"
+        },
+        {
+          "kind": "contacts",
+          "text": "Saint Petersburg  |  kalashnikov78ru@gmail.com"
+        },
+        {
+          "kind": "contacts",
+          "text": "https://t.me/huteex  |  https://github.com/huteeex"
+        },
+        {
+          "kind": "heading",
+          "text": "About"
+        },
+        {
+          "kind": "body",
+          "text": "I write backends for web applications in Python and TypeScript. I have worked on request management, service booking, document handling and Telegram bots. I design databases, build APIs and connect them to the frontend."
+        },
+        {
+          "kind": "heading",
+          "text": "Skills"
+        },
+        {
+          "kind": "body",
+          "text": "Main stack: Python, Django, Django REST Framework, TypeScript, Node.js, PostgreSQL, SQL."
+        },
+        {
+          "kind": "body",
+          "text": "Deployment tools: Docker, Docker Compose, Nginx, Git."
+        },
+        {
+          "kind": "body",
+          "text": "Also worked with Go, C#, React, Next.js and Socket.io."
+        },
+        {
+          "kind": "heading",
+          "text": "Project experience"
+        },
+        {
+          "kind": "bullet",
+          "text": "APIs and access: built registration, authentication, user accounts and admin panels. Set up role-based permissions and JWT token refresh."
+        },
+        {
+          "kind": "bullet",
+          "text": "Databases: designed PostgreSQL tables and relationships. Wrote search and filter queries, and SQL functions for pricing and commission calculations. Added sales and stock tracking to a store management application."
+        },
+        {
+          "kind": "bullet",
+          "text": "Documents: built file uploads and metadata storage. Linked documents to users and groups, and added API endpoints for managing records."
+        },
+        {
+          "kind": "bullet",
+          "text": "Service booking: built schedules, staff and time selection, and booking statuses. Added an admin panel for managing services, clients and bookings."
+        },
+        {
+          "kind": "bullet",
+          "text": "Bots and integrations: wrote Telegram bots in Python and Go, command handlers and automated replies. Connected external APIs, and set up notifications and messaging through Socket.io."
+        },
+        {
+          "kind": "bullet",
+          "text": "Deployment and maintenance: prepared applications for launch with Docker and Nginx. Maintained small-business websites, fixed forms and page layouts across screen sizes."
+        },
+        {
+          "kind": "heading",
+          "text": "Education"
+        },
+        {
+          "kind": "body",
+          "text": "Peter the Great St. Petersburg Polytechnic University, 2026. Secondary vocational education in Information Systems and Programming."
+        },
+        {
+          "kind": "heading",
+          "text": "Languages"
+        },
+        {
+          "kind": "body",
+          "text": "Russian - native."
+        }
+      ]
+    }
+  }
+}

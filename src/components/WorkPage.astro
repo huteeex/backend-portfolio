@@ -1,0 +1,127 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from './Icon.astro';
+import { works, type Lang, type WorkProject } from '../data/work';
+import '../styles/pages.css';
+
+interface Props {
+  lang: Lang;
+  project: WorkProject;
+}
+
+const { lang, project } = Astro.props;
+const en = lang === 'en';
+const root = en ? '/en/' : '/';
+const index = works[lang].findIndex(item => item.slug === project.slug);
+const next = works[lang][(index + 1) % works[lang].length];
+const sections = en
+  ? [
+      { id: 'context', label: 'Task' },
+      { id: 'features', label: 'Implementation' },
+      { id: 'decision', label: 'Architecture' },
+      { id: 'limitations', label: 'Limitations' },
+      { id: 'sources', label: 'Source code' },
+    ]
+  : [
+      { id: 'context', label: 'Задача' },
+      { id: 'features', label: 'Реализация' },
+      { id: 'decision', label: 'Устройство' },
+      { id: 'limitations', label: 'Ограничения' },
+      { id: 'sources', label: 'Исходный код' },
+    ];
+---
+
+<Layout
+  lang={lang}
+  title={`${project.name} - ${project.category}`}
+  description={project.summary}
+  section="projects"
+>
+  <article class="case-page page-width">
+    <a href={`${root}#experience`} class="back-link">
+      <Icon name="back" size={15} />
+      {en ? 'Back to experience' : 'К опыту и навыкам'}
+    </a>
+
+    <header class="case-header">
+      <div class="case-meta">
+        <span class="eyebrow">{project.category}</span>
+      </div>
+      <h1>{project.name}</h1>
+      <p>{project.summary}</p>
+      <ul class="case-tech" aria-label={en ? 'Technology stack' : 'Технологии'}>
+        {project.stack.map(technology => <li>{technology}</li>)}
+      </ul>
+      <a class="case-repo text-link" href={project.repo} target="_blank" rel="noopener noreferrer">
+        {en ? 'View on GitHub' : 'Открыть на GitHub'}
+        <Icon name="diagonal" size={15} />
+      </a>
+    </header>
+
+    <figure class="real-case-flow">
+      <figcaption class="eyebrow">{en ? 'PROJECT STRUCTURE' : 'УСТРОЙСТВО ПРОЕКТА'}</figcaption>
+      <ol class="flow-diagram" aria-label={en ? 'Project workflow' : 'Схема работы проекта'}>
+        {project.flow.map((step, i) => (
+          <li><span>{String(i + 1).padStart(2, '0')}</span>{step}</li>
+        ))}
+      </ol>
+    </figure>
+
+    <div class="case-content">
+      <aside class="case-index">
+        <span class="eyebrow">{en ? 'CONTENTS' : 'СОДЕРЖАНИЕ'}</span>
+        {sections.map(section => <a href={`#${section.id}`}>{section.label}</a>)}
+      </aside>
+
+      <div class="case-prose">
+        <section id="context">
+          <span class="prose-number">01</span>
+          <h2>{en ? 'Task' : 'Задача'}</h2>
+          <p>{project.context}</p>
+        </section>
+
+        <section id="features">
+          <span class="prose-number">02</span>
+          <h2>{en ? 'Implementation' : 'Что сделано'}</h2>
+          <ul class="approach-list">
+            {project.features.map(feature => <li>{feature}</li>)}
+          </ul>
+        </section>
+
+        <section id="decision">
+          <span class="prose-number">03</span>
+          <h2>{en ? 'Architecture' : 'Как устроено'}</h2>
+          <p>{project.decision}</p>
+        </section>
+
+        <section id="limitations">
+          <span class="prose-number">04</span>
+          <h2>{en ? 'Limitations' : 'Ограничения'}</h2>
+          <ul class="approach-list">
+            {project.limitations.map(limitation => <li>{limitation}</li>)}
+          </ul>
+        </section>
+
+        <section id="sources">
+          <span class="prose-number">05</span>
+          <h2>{en ? 'Source code' : 'Исходный код'}</h2>
+          <div class="case-sources">
+            {project.sources.map(source => (
+              <a href={source.href} target="_blank" rel="noopener noreferrer">
+                {source.label}<Icon name="diagonal" size={14} />
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <a class="next-project" href={`${root}work/${next.slug}/`}>
+      <div>
+        <span class="eyebrow">{en ? 'NEXT PROJECT' : 'СЛЕДУЮЩИЙ ПРОЕКТ'}</span>
+        <h2>{next.name}</h2>
+      </div>
+      <Icon name="arrow" size={27} />
+    </a>
+  </article>
+</Layout>

@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { contacts } from '../data/profile';
+interface Props { lang: 'ru' | 'en'; }
+const { lang } = Astro.props;
+const en = lang === 'en';
+---
+<div class="contact-links">
+  {contacts.map(contact => <div class="contact-row">
+    <a class="contact-address" href={contact.href} target={contact.id === 'email' ? undefined : '_blank'} rel={contact.id === 'email' ? undefined : 'noopener noreferrer'}>
+      <span class="contact-channel-icon"><Icon name={contact.icon} size={20} /></span>
+      <span class="contact-address-text"><span>{contact.label}</span><strong>{contact.value}</strong></span>
+      <Icon name="diagonal" size={15} />
+    </a>
+    {contact.id === 'email' && <button class="contact-copy" data-copy-email={contact.value} aria-label={en ? 'Copy email address' : 'Скопировать email'} title={en ? 'Copy email address' : 'Скопировать email'}><Icon name="copy" size={17} /></button>}
+  </div>)}
+</div>
+<p class="copy-feedback" data-copy-feedback role="status" aria-live="polite" data-success={en ? 'Email copied.' : 'Email скопирован.'} data-error={en ? 'Select the email address to copy it.' : 'Выдели адрес почты, чтобы скопировать его.'}></p>
+<script>
+  const copyButton = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  const feedback = document.querySelector<HTMLElement>('[data-copy-feedback]');
+  let feedbackTimer: ReturnType<typeof setTimeout>;
+  copyButton?.addEventListener('click', async () => {
+    if (!feedback || !copyButton.dataset.copyEmail) return;
+    clearTimeout(feedbackTimer);
+    try {
+      await navigator.clipboard.writeText(copyButton.dataset.copyEmail);
+      feedback.textContent = feedback.dataset.success || '';
+    } catch {
+      feedback.textContent = feedback.dataset.error || '';
+    }
+    feedbackTimer = setTimeout(() => { feedback.textContent = ''; }, 3500);
+  });
+</script>
