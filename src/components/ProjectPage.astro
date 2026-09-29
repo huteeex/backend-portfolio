@@ -13,7 +13,7 @@ const next = projects[lang][(index + 1) % projects[lang].length];
 ---
 <Layout lang={lang} title={`${project.title} - ${en ? 'Concept' : 'Концепт'}`} description={project.summary} section="projects">
   <article class="case-page page-width">
-    <a href={`${root}#work`} class="back-link"><Icon name="back" size={15} />{en ? 'Back to experiments' : 'К экспериментам'}</a>
+    <a href={`${root}lab/`} class="back-link"><Icon name="back" size={15} />{en ? 'Back to experiments' : 'К экспериментам'}</a>
     <header class="case-header"><div class="case-meta"><span class="eyebrow">{project.number} / {project.category}</span><span class="concept-tag">{en ? 'Concept' : 'Концепт'}</span></div><h1>{project.title}</h1><p>{project.summary}</p></header>
     <div class:list={['case-demo', `case-demo-${project.slug}`]}><ProjectDemo kind={project.slug} lang={lang} expanded client:load /></div>
     <p class="case-note">{en ? 'This demo runs in the browser without a backend. The backend plan is outlined below.' : 'Демо работает в браузере, без backend. Ниже - план серверной части.'}</p>

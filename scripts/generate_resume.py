@@ -8,13 +8,14 @@ PDF engine: ReportLab (explicit fallback when bundled LibreOffice is unavailable
 The PDF and DOCX share every text block; PDF layout is not a DOCX render.
 The DOCX is editable. The PDF has selectable text and no editing restrictions.
 All formats share the same reviewed content model in content/resume-draft.json.
-PNG previews are rasterised from the generated PDF itself at 1200px width.
+PNG previews are rasterised from every generated PDF page at 1200px width.
+The output manifest records page counts and preview dimensions for the site.
 Use --previews-only to refresh PNGs without rewriting existing PDF/DOCX files.
 Poppler is resolved from the bundled Python runtime; --poppler-bin can specify
 another Poppler executable directory when it is not available in that runtime.
 
-Font defaults use the standard Windows Arial files. On another host,
-provide --font-dir with arial.ttf and arialbd.ttf, or override each
+Font defaults use the standard Windows Segoe UI files. On another host,
+provide --font-dir with segoeui.ttf and segoeuib.ttf, or override each
 font path with --body-font, --bold-font and --title-font. Font files are embedded
 in PDFs and referenced by family name in DOCX; no external uploads are involved.
 """
@@ -44,23 +45,24 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import Paragraph, SimpleDocTemplate
+from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BLACK = "000000"
+BLACK = "292925"
+MUTED = "696A64"
 LINK_RE = re.compile(r"https?://[^\s|]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}")
 # Sizes and spacing are in points; all text flows in a single reading column.
 LAYOUT = {
     "status": {"size": 9, "leading": 12, "before": 0, "after": 6, "bold": True},
     "note": {"size": 9.3, "leading": 12.5, "before": 0, "after": 5},
-    "name": {"size": 24, "leading": 29, "before": 0, "after": 5, "bold": True},
-    "role": {"size": 12, "leading": 15, "before": 0, "after": 5},
-    "contacts": {"size": 9.4, "leading": 12, "before": 0, "after": 3},
-    "heading": {"size": 11, "leading": 14, "before": 13, "after": 5, "bold": True},
-    "label": {"size": 10.5, "leading": 14, "before": 0, "after": 4, "bold": True},
-    "body": {"size": 10.2, "leading": 13.6, "before": 0, "after": 4},
-    "bullet": {"size": 10.2, "leading": 13.6, "before": 0, "after": 5},
+    "name": {"size": 27, "leading": 31, "before": 0, "after": 4, "bold": True},
+    "role": {"size": 12.4, "leading": 16, "before": 0, "after": 5},
+    "contacts": {"size": 9.3, "leading": 12.4, "before": 0, "after": 2},
+    "heading": {"size": 10.6, "leading": 14, "before": 9, "after": 4, "bold": True},
+    "label": {"size": 10.5, "leading": 14, "before": 0, "after": 2, "bold": True},
+    "body": {"size": 10.1, "leading": 13.5, "before": 0, "after": 2, "bold": False},
+    "bullet": {"size": 10.1, "leading": 13.5, "before": 0, "after": 2.5},
 }
 
 
@@ -95,7 +97,7 @@ def add_bullet_numbering(doc) -> str:
     props = OxmlElement("w:rPr")
     fonts = OxmlElement("w:rFonts")
     for script in ("ascii", "hAnsi"):
-        fonts.set(qn("w:" + script), "Arial")
+        fonts.set(qn("w:" + script), "Segoe UI")
     props.append(fonts)
     level.append(props)
     abstract.append(level)
@@ -143,7 +145,7 @@ def add_docx_link(paragraph, label: str, family: str, size: float, language: str
     fonts.set(qn("w:hAnsi"), family)
     props.append(fonts)
     color = OxmlElement("w:color")
-    color.set(qn("w:val"), BLACK)
+    color.set(qn("w:val"), MUTED)
     props.append(color)
     size_element = OxmlElement("w:sz")
     size_element.set(qn("w:val"), str(round(size * 2)))
@@ -182,11 +184,11 @@ def build_docx(path: Path, language: dict, accent: str, families: dict) -> None:
     doc = Document()
     section = doc.sections[0]
     section.page_width, section.page_height = Mm(210), Mm(297)
-    section.top_margin = section.bottom_margin = Mm(18)
+    section.top_margin = section.bottom_margin = Mm(16.5)
     section.left_margin = section.right_margin = Mm(20)
-    set_style_font(doc.styles["Normal"], families["body"], 10.2)
-    set_style_font(doc.styles["Title"], families["title"], 24, True)
-    set_style_font(doc.styles["Heading 1"], families["body"], 11, True)
+    set_style_font(doc.styles["Normal"], families["body"], 10.3)
+    set_style_font(doc.styles["Title"], families["title"], 27, True)
+    set_style_font(doc.styles["Heading 1"], families["body"], 10.6, True)
     for style_name in ("Title", "Heading 1", "Normal"):
         ppr = doc.styles[style_name].element.find(qn("w:pPr"))
         if ppr is not None:
@@ -208,6 +210,8 @@ def build_docx(path: Path, language: dict, accent: str, families: dict) -> None:
         style_name = "Title" if kind == "name" else "Heading 1" if kind == "heading" else "Normal"
         paragraph = doc.add_paragraph(style=style_name)
         fmt = paragraph.paragraph_format
+        if block.get("page_break_before"):
+            fmt.page_break_before = True
         fmt.space_before = Pt(layout["before"])
         fmt.space_after = Pt(layout["after"])
         fmt.line_spacing = Pt(layout["leading"])
@@ -230,7 +234,7 @@ def build_docx(path: Path, language: dict, accent: str, families: dict) -> None:
             run.font.name = families["title"] if kind == "name" else families["body"]
             run.font.size = Pt(layout["size"])
             run.font.bold = bold or layout.get("bold", False)
-            run.font.color.rgb = RGBColor.from_string(accent if kind == "status" else BLACK)
+            run.font.color.rgb = RGBColor.from_string(accent if kind in {"status", "role", "heading"} else MUTED if kind == "contacts" else BLACK)
             rpr = run._element.get_or_add_rPr()
             lang = OxmlElement("w:lang")
             lang.set(qn("w:val"), language["language_tag"])
@@ -261,7 +265,7 @@ def build_pdf(path: Path, language: dict, accent: str) -> None:
             leading=layout["leading"],
             spaceBefore=layout["before"],
             spaceAfter=layout["after"],
-            textColor=HexColor("#" + (accent if kind == "status" else BLACK)),
+            textColor=HexColor("#" + (accent if kind in {"status", "role", "heading"} else MUTED if kind == "contacts" else BLACK)),
             alignment=TA_LEFT,
             keepWithNext=kind in {"status", "name", "role", "heading", "label"},
             allowWidows=0,
@@ -276,11 +280,15 @@ def build_pdf(path: Path, language: dict, accent: str) -> None:
     document = SimpleDocTemplate(
         str(path), pagesize=A4,
         leftMargin=20 / 25.4 * 72, rightMargin=20 / 25.4 * 72,
-        topMargin=18 / 25.4 * 72, bottomMargin=18 / 25.4 * 72,
+        topMargin=16.5 / 25.4 * 72, bottomMargin=16.5 / 25.4 * 72,
         title=language["document_title"], author="", subject="Backend developer resume",
         pageCompression=1,
     )
-    story = [Paragraph(pdf_text(block), styles[block["kind"]], bulletText="\u2022" if block["kind"] == "bullet" else None) for block in language["blocks"]]
+    story = []
+    for block in language["blocks"]:
+        if block.get("page_break_before"):
+            story.append(PageBreak())
+        story.append(Paragraph(pdf_text(block), styles[block["kind"]], bulletText="\u2022" if block["kind"] == "bullet" else None))
     document.build(story)
 
 
@@ -297,8 +305,9 @@ def validate_pair(docx_path: Path, pdf_path: Path, language: dict) -> dict:
         if "word/comments.xml" in package.namelist():
             raise ValueError("Unexpected comments in resume")
     reader = PdfReader(pdf_path)
-    if len(reader.pages) != 1:
-        raise ValueError(f"Expected a one-page resume, got {len(reader.pages)}: {pdf_path}")
+    page_count = len(reader.pages)
+    if not 1 <= page_count <= 2:
+        raise ValueError(f"Expected a one- or two-page resume, got {page_count}: {pdf_path}")
     extracted = "\n".join(page.extract_text() or "" for page in reader.pages)
     if normalized(extracted) != normalized("\n".join(expected)):
         raise ValueError(f"PDF text differs from the shared model: {pdf_path}")
@@ -306,7 +315,7 @@ def validate_pair(docx_path: Path, pdf_path: Path, language: dict) -> dict:
         raise ValueError("Replacement glyph found in PDF text")
     return {
         "language": language["language_tag"],
-        "pdf_pages": len(reader.pages),
+        "pdf_pages": page_count,
         "text_matches_shared_model": True,
         "docx_editable": True,
         "pdf_engine": "reportlab",
@@ -334,33 +343,33 @@ def resolve_pdftoppm(directory: Path | None) -> Path:
     raise FileNotFoundError("Poppler pdftoppm is required; provide --poppler-bin")
 
 
-def build_preview(pdf_path: Path, png_path: Path, width: int, renderer: Path) -> dict:
-    """Rasterise the actual single-page PDF; do not rebuild its layout as HTML."""
+def build_previews(pdf_path: Path, width: int, renderer: Path) -> list[dict]:
+    """Rasterise every PDF page and verify its PNG dimensions."""
     reader = PdfReader(pdf_path)
-    if len(reader.pages) != 1:
-        raise ValueError(f"A single preview requires a one-page PDF: {pdf_path}")
-    subprocess.run(
-        [str(renderer), "-f", "1", "-l", "1", "-singlefile", "-png",
-         "-scale-to-x", str(width), "-scale-to-y", "-1", str(pdf_path),
-         str(png_path.with_suffix(""))],
-        check=True, capture_output=True, text=True,
-    )
-    header = png_path.read_bytes()[:24]
-    if header[:8] != b"\x89PNG\r\n\x1a\n" or header[12:16] != b"IHDR":
-        raise ValueError(f"Invalid PNG preview: {png_path}")
-    actual_width, actual_height = struct.unpack(">II", header[16:24])
-    page = reader.pages[0]
-    expected_height = round(width * float(page.mediabox.height) / float(page.mediabox.width))
-    if actual_width != width or abs(actual_height - expected_height) > 1:
-        raise ValueError(f"Unexpected preview dimensions: {actual_width}x{actual_height}")
-    return {
-        "preview_file": png_path.name,
-        "preview_width": actual_width,
-        "preview_height": actual_height,
-        "preview_bytes": png_path.stat().st_size,
-        "preview_source": pdf_path.name,
-        "preview_engine": "poppler pdftoppm",
-    }
+    previews = []
+    for page_number, page in enumerate(reader.pages, start=1):
+        png_path = pdf_path.with_name(f"{pdf_path.stem}-preview-{page_number}.png")
+        subprocess.run(
+            [str(renderer), "-f", str(page_number), "-l", str(page_number),
+             "-singlefile", "-png", "-scale-to-x", str(width),
+             "-scale-to-y", "-1", str(pdf_path), str(png_path.with_suffix(""))],
+            check=True, capture_output=True, text=True,
+        )
+        header = png_path.read_bytes()[:24]
+        if header[:8] != b"\x89PNG\r\n\x1a\n" or header[12:16] != b"IHDR":
+            raise ValueError(f"Invalid PNG preview: {png_path}")
+        actual_width, actual_height = struct.unpack(">II", header[16:24])
+        expected_height = round(width * float(page.mediabox.height) / float(page.mediabox.width))
+        if actual_width != width or abs(actual_height - expected_height) > 1:
+            raise ValueError(f"Unexpected preview dimensions: {actual_width}x{actual_height}")
+        previews.append({
+            "page": page_number,
+            "file": png_path.name,
+            "width": actual_width,
+            "height": actual_height,
+            "bytes": png_path.stat().st_size,
+        })
+    return previews
 
 
 def main() -> None:
@@ -381,9 +390,9 @@ def main() -> None:
     families = {}
     if not args.previews_only:
         font_paths = {
-            "body": args.body_font or args.font_dir / "arial.ttf",
-            "bold": args.bold_font or args.font_dir / "arialbd.ttf",
-            "title": args.title_font or args.font_dir / "arialbd.ttf",
+            "body": args.body_font or args.font_dir / "segoeui.ttf",
+            "bold": args.bold_font or args.font_dir / "segoeuib.ttf",
+            "title": args.title_font or args.font_dir / "segoeuib.ttf",
         }
         for path in font_paths.values():
             if not path.is_file():
@@ -398,6 +407,7 @@ def main() -> None:
     accent = data.get("accent", "#b74b34").lstrip("#")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     results = []
+    manifest = {"version": 1, "languages": {}}
     for code, language in data["languages"].items():
         if code not in {"ru", "en"}:
             raise ValueError(f"Unexpected language code: {code}")
@@ -405,14 +415,31 @@ def main() -> None:
             raise ValueError("Resume must include the candidate name")
         docx_path = args.output_dir / f"resume-{code}.docx"
         pdf_path = args.output_dir / f"resume-{code}.pdf"
-        preview_path = args.output_dir / f"resume-{code}-preview.png"
         if not args.previews_only:
             build_docx(docx_path, language, accent, families)
             build_pdf(pdf_path, language, accent)
         result = validate_pair(docx_path, pdf_path, language)
-        result.update(build_preview(pdf_path, preview_path, args.preview_width, renderer))
+        previews = build_previews(pdf_path, args.preview_width, renderer)
+        if len(previews) != result["pdf_pages"]:
+            raise ValueError(f"Preview count differs from PDF page count: {pdf_path}")
+        result["previews"] = previews
+        manifest["languages"][code] = {
+            "page_count": result["pdf_pages"],
+            "pdf": pdf_path.name,
+            "docx": docx_path.name,
+            "previews": [{key: preview[key] for key in ("page", "file", "width", "height")} for preview in previews],
+        }
         results.append(result)
-    print(json.dumps({"outputs": results}, ensure_ascii=True, indent=2))
+    manifest_path = args.output_dir / "resume-manifest.json"
+    temporary_manifest = manifest_path.with_suffix(".json.tmp")
+    temporary_manifest.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary_manifest.replace(manifest_path)
+    for code in manifest["languages"]:
+        current = {preview["file"] for preview in manifest["languages"][code]["previews"]}
+        for stale in args.output_dir.glob(f"resume-{code}-preview*.png"):
+            if stale.name not in current:
+                stale.unlink()
+    print(json.dumps({"outputs": results, "manifest": manifest_path.name}, ensure_ascii=True, indent=2))
 
 
 if __name__ == "__main__":

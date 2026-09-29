@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "languages": {
+    "ru": {
+      "page_count": 1,
+      "pdf": "resume-ru.pdf",
+      "docx": "resume-ru.docx",
+      "previews": [
+        {
+          "page": 1,
+          "file": "resume-ru-preview-1.png",
+          "width": 1200,
+          "height": 1698
+        }
+      ]
+    },
+    "en": {
+      "page_count": 1,
+      "pdf": "resume-en.pdf",
+      "docx": "resume-en.docx",
+      "previews": [
+        {
+          "page": 1,
+          "file": "resume-en-preview-1.png",
+          "width": 1200,
+          "height": 1698
+        }
+      ]
+    }
+  }
+}

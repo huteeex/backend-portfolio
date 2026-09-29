@@ -1,24 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from './Icon.astro';
-import ProjectDemo from './ProjectDemo';
-import { projects, type Lang } from '../data/content';
-import ExperienceSection from './ExperienceSection.astro';
+import type { Lang } from '../data/content';
+import SelectedWorkSection from './SelectedWorkSection.astro';
 import { getProfile } from '../data/profile';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const en = lang === 'en';
 const root = en ? '/en/' : '/';
-const work = projects[lang];
 const profile = getProfile(lang);
 ---
 <Layout lang={lang} title={`${profile.name} - ${profile.role}`}>
   <section class="intro page-width">
     <div class="intro-copy">
-      <p class="eyebrow intro-label"><span class="tiny-cross">✳</span>PYTHON / TYPESCRIPT</p>
-      <h1>{en ? 'APIs and' : 'API и'}<br /><span>{en ? 'backend development.' : 'серверная разработка.'}</span></h1>
-      <p class="intro-description">{en ? 'I’m Vladislav, a backend developer from Saint Petersburg.' : 'Я Владислав, backend-разработчик из Санкт-Петербурга.'}<br class="desktop-break" />{en ? ' I build web services with Python and TypeScript, and work with PostgreSQL.' : ' Пишу веб-сервисы на Python и TypeScript, работаю с PostgreSQL.'}</p>
-      <div class="intro-links"><a class="text-link" href="#experience">{en ? 'What I can do' : 'Что я умею'}<Icon name="arrow" size={16} /></a><span class="link-dot">·</span><a class="subtle-link" href={`${root}resume/`}>{en ? 'Résumé' : 'Резюме'}<Icon name="diagonal" size={14} /></a></div>
+      <p class="eyebrow intro-label"><span class="tiny-cross">✳</span>BACKEND / DATA / TOOLS</p>
+      <h1>{en ? 'Backend development' : 'Серверная разработка'}<br /><span>{en ? 'in practice.' : 'на конкретных задачах.'}</span></h1>
+      <p class="intro-description">{en ? 'I’m Vladislav. For my diploma project, I built document APIs and file handling. On a live studio website, I built a server-side price sync that keeps the last verified data when the external source fails. I have also worked on event processing and a Windows utility.' : 'Я Владислав. Для дипломного проекта сделал API документов и загрузку файлов. На работающем сайте студии настроил обновление цен: при сбое внешнего источника остаётся последняя проверенная версия. Ещё работал с обработкой событий и утилитой для Windows.'}</p>
+      <div class="intro-links"><a class="text-link" href="#experience">{en ? 'See the work' : 'Смотреть работы'}<Icon name="arrow" size={16} /></a><span class="link-dot">·</span><a class="subtle-link" href={`${root}resume/`}>{en ? 'Résumé' : 'Резюме'}<Icon name="diagonal" size={14} /></a></div>
     </div>
     <div class="logic-object" aria-hidden="true">
       <div class="object-shadow"></div>
@@ -29,36 +27,26 @@ const profile = getProfile(lang);
     </div>
   </section>
 
-  <ExperienceSection lang={lang} />
-
-  <section class="work-section page-width" id="work" aria-labelledby="work-title">
-    <div class="section-heading"><h2 id="work-title">{en ? 'Experiments' : 'Эксперименты'}<span class="item-count">03</span></h2><span class="section-aside">{en ? 'Interactive demos' : 'Интерактивные демо'}</span></div>
-    <div class="project-grid">
-      {work.map((project, index) => <article class:list={['project-card', `project-card-${project.slug}`, { 'project-card-wide': index === 2 }]}>
-        <div class="project-stage"><ProjectDemo kind={project.slug} lang={lang} client:visible /></div>
-        <div class="project-caption"><div class="project-caption-top"><span class="project-category">{project.category}</span><span class="concept-tag">{en ? 'Concept' : 'Концепт'}</span></div><a class="project-link" href={`${root}projects/${project.slug}/`}><h3>{project.title}</h3><span class="project-arrow"><Icon name="diagonal" size={19} /></span></a><p>{project.summary}</p>{index === 2 && <a class="text-link project-read" href={`${root}projects/${project.slug}/`}>{en ? 'Behind the system' : 'Как это устроено'}<Icon name="arrow" size={16} /></a>}</div>
-      </article>)}
-    </div>
-    <p class="collection-note"><span class="note-mark">↳</span>{en ? 'The buttons run local demos. Each page explains the proposed backend.' : 'Кнопки запускают демо в браузере. На страницах разбираю, как могла бы работать серверная часть.'}</p>
-  </section>
-
-  <section class="about-section page-width" id="about">
-    <div class="section-index"><span class="eyebrow">{en ? 'ABOUT' : 'О СЕБЕ'}</span><span class="handwritten">{en ? 'Saint Petersburg' : 'Санкт-Петербург'}</span></div>
-    <div class="about-copy"><h2>{en ? 'Backend developer' : 'Backend-разработчик'}</h2><p>{en ? 'I have worked on booking services, document uploads, a product catalogue and store management software. These projects involved APIs, database design, user roles and admin panels.' : 'Работал с сервисами записи, загрузкой документов, каталогом товаров и приложением для учёта магазина. В этих проектах занимался API, структурой базы, ролями пользователей и административными панелями.'}</p><p>{en ? 'I also use React and Next.js to connect the interface to the backend. For deployment, I work with Docker, Compose and Nginx.' : 'Также работаю с React и Next.js: могу подключить интерфейс к backend и доработать формы. Для запуска приложений использую Docker, Compose и Nginx.'}</p>
-      <div class="skill-groups">
-        <div class="skill-group"><span>Backend</span><p>Python · Django / DRF · TypeScript · Node.js</p></div>
-        <div class="skill-group"><span>{en ? 'Data' : 'Данные'}</span><p>PostgreSQL · SQL · PL/pgSQL</p></div>
-        <div class="skill-group"><span>{en ? 'Tools' : 'Инструменты'}</span><p>Docker · Nginx · Git</p></div>
-        <div class="skill-group"><span>{en ? 'Interface' : 'Интерфейс'}</span><p>React · Next.js</p></div>
-      </div>
-      <p class="education-note">{en ? 'Information Systems and Programming · 2026' : 'Информационные системы и программирование · 2026'}<span>{en ? 'Peter the Great St. Petersburg Polytechnic University · Secondary vocational education' : 'СПбПУ Петра Великого · Среднее профессиональное образование'}</span></p>
-    </div>
-  </section>
+  <SelectedWorkSection lang={lang} />
 
   <section class="resume-strip page-width" aria-labelledby="resume-title">
     <div class="paper-stack" aria-hidden="true"><div></div><div></div><div><span>CURRICULUM VITÆ</span><b>Résumé</b><i></i><i></i><i></i><span class="paper-draft">RU / EN</span></div></div>
     <div class="resume-strip-copy"><span class="eyebrow">{en ? 'RÉSUMÉ' : 'РЕЗЮМЕ'}</span><h2 id="resume-title">{en ? 'Experience and skills' : 'Опыт и навыки'}</h2><p>{en ? 'Read online or download a PDF or Word copy in Russian or English.' : 'Можно прочитать на сайте или скачать PDF и Word на русском и английском.'}</p><a class="text-link" href={`${root}resume/`}>{en ? 'Open résumé' : 'Открыть резюме'}<Icon name="arrow" size={16} /></a></div>
     <span class="resume-formats">PDF<br />DOCX<br /><span>RU / EN</span></span>
+  </section>
+
+  <section class="about-section page-width" id="about">
+    <div class="section-index"><span class="eyebrow">{en ? 'ABOUT' : 'О СЕБЕ'}</span><span class="handwritten">{en ? 'Saint Petersburg' : 'Санкт-Петербург'}</span></div>
+    <div class="about-copy"><h2>{en ? 'The work behind the stack' : 'Что стоит за стеком'}</h2><p>{en ? 'In these projects I worked on document routes and PostgreSQL data, external sources that fail or return partial data, event capture and recovery, and checks before changing Windows settings. The case studies show the implementation and its limits.' : 'В этих проектах я работал с маршрутами документов и данными в PostgreSQL, внешними источниками с неполными ответами, приёмом и восстановлением потока событий, проверками перед изменением настроек Windows. В разборах показаны реализация и её ограничения.'}</p><p>{en ? 'I use AI tools to investigate errors and outline test cases, then check suggestions against the code, documentation and tests.' : 'ИИ-инструменты использую для разбора ошибок и черновиков тест-кейсов. Результат сверяю с кодом, документацией и тестами.'}</p>
+      <div class="skill-groups">
+        <div class="skill-group"><span>{en ? 'APIs and data' : 'API и данные'}</span><p>TypeScript · Bun/Hono · Node.js · PostgreSQL · SQL</p></div>
+        <div class="skill-group"><span>{en ? 'Integrations' : 'Интеграции'}</span><p>{en ? 'Python · HTTP APIs · retries · external data validation' : 'Python · HTTP API · повторы · проверка внешних данных'}</p></div>
+        <div class="skill-group"><span>{en ? 'Systems' : 'Системные задачи'}</span><p>{en ? 'Rust · C# / .NET · WPF · event processing' : 'Rust · C# / .NET · WPF · обработка событий'}</p></div>
+        <div class="skill-group"><span>{en ? 'Verification' : 'Проверка'}</span><p>{en ? 'Automated tests · CI · diagnostics · Git' : 'Автоматические тесты · CI · диагностика · Git'}</p></div>
+      </div>
+      <a class="subtle-link about-lab-link" href={`${root}lab/`}>{en ? 'Browser experiments, separately from completed work' : 'Эксперименты в браузере - отдельно от выполненных работ'}<Icon name="diagonal" size={14} /></a>
+      <p class="education-note">{en ? 'Information Systems and Programming · 2026' : 'Информационные системы и программирование · 2026'}<span>{en ? 'Peter the Great St. Petersburg Polytechnic University · Secondary vocational education' : 'СПбПУ Петра Великого · Среднее профессиональное образование'}</span></p>
+    </div>
   </section>
 
   <section class="contact-section page-width"><div><span class="eyebrow">{en ? 'CONTACT' : 'КОНТАКТЫ'}</span><h2>{en ? 'Discuss a project or role' : 'Обсудить проект или вакансию'}</h2></div><button class="contact-cta" data-contact-open>{en ? 'Contact me' : 'Написать мне'}<Icon name="diagonal" size={20} /></button></section>

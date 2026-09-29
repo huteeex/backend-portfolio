@@ -3,183 +3,71 @@
   "accent": "#b74b34",
   "languages": {
     "ru": {
-      "document_title": "Владислав Калашников Резюме",
+      "document_title": "Владислав Калашников Резюме backend разработчика",
       "language_tag": "ru-RU",
       "blocks": [
-        {
-          "kind": "name",
-          "text": "Владислав Калашников"
-        },
-        {
-          "kind": "role",
-          "text": "Backend-разработчик - Python / TypeScript"
-        },
-        {
-          "kind": "contacts",
-          "text": "Санкт-Петербург  |  kalashnikov78ru@gmail.com"
-        },
-        {
-          "kind": "contacts",
-          "text": "https://t.me/huteex  |  https://github.com/huteeex"
-        },
-        {
-          "kind": "heading",
-          "text": "О себе"
-        },
-        {
-          "kind": "body",
-          "text": "Пишу серверную часть веб-приложений на Python и TypeScript. Работал с системами заявок, записью на услуги, документами и Telegram-ботами. Проектирую базы данных, разрабатываю API и подключаю их к интерфейсу."
-        },
-        {
-          "kind": "heading",
-          "text": "Навыки"
-        },
-        {
-          "kind": "body",
-          "text": "Основной стек: Python, Django, Django REST Framework, TypeScript, Node.js, PostgreSQL, SQL."
-        },
-        {
-          "kind": "body",
-          "text": "Для запуска: Docker, Docker Compose, Nginx, Git."
-        },
-        {
-          "kind": "body",
-          "text": "Также работал с Go, C#, React, Next.js и Socket.io."
-        },
-        {
-          "kind": "heading",
-          "text": "Проектная практика"
-        },
-        {
-          "kind": "bullet",
-          "text": "API и доступ: разрабатывал регистрацию, авторизацию, личные кабинеты и админпанели. Настраивал права пользователей по ролям и обновление JWT-токенов."
-        },
-        {
-          "kind": "bullet",
-          "text": "Базы данных: проектировал таблицы и связи в PostgreSQL. Писал запросы для поиска и фильтрации, SQL-функции для расчёта стоимости и комиссий. В приложении магазина добавлял учёт продаж и остатков."
-        },
-        {
-          "kind": "bullet",
-          "text": "Документы: сделал загрузку файлов и хранение метаданных. Связал документы с пользователями и группами, добавил управление записями через API."
-        },
-        {
-          "kind": "bullet",
-          "text": "Запись на услуги: разработал расписание, выбор мастера и времени, статусы записи. Добавил админпанель для управления услугами, клиентами и заявками."
-        },
-        {
-          "kind": "bullet",
-          "text": "Боты и интеграции: писал Telegram-ботов на Python и Go, обработчики команд и автоматические ответы. Подключал внешние API, настраивал уведомления и обмен сообщениями через Socket.io."
-        },
-        {
-          "kind": "bullet",
-          "text": "Развёртывание и доработка: готовил приложения к запуску с Docker и Nginx. Дорабатывал сайты для малого бизнеса, исправлял формы и отображение страниц на разных экранах."
-        },
-        {
-          "kind": "heading",
-          "text": "Образование"
-        },
-        {
-          "kind": "body",
-          "text": "СПбПУ Петра Великого, 2026. Среднее профессиональное образование, информационные системы и программирование."
-        },
-        {
-          "kind": "heading",
-          "text": "Языки"
-        },
-        {
-          "kind": "body",
-          "text": "Русский - родной."
-        }
+        { "kind": "name", "text": "Владислав Калашников" },
+        { "kind": "role", "text": "Backend-разработчик" },
+        { "kind": "contacts", "text": "Санкт-Петербург  |  kalashnikov78ru@gmail.com" },
+        { "kind": "contacts", "text": "https://t.me/huteex  |  https://github.com/huteeex" },
+        { "kind": "heading", "text": "Профиль" },
+        { "kind": "body", "text": "Разрабатываю API и интеграции для веб-сервисов. В дипломном проекте сделал загрузку документов и проверки доступа; для работающего сайта студии - синхронизацию цен и PDF с сохранением данных при сбоях. В личных инструментах работал с журналом событий и диагностикой Windows." },
+        { "kind": "heading", "text": "Избранные работы" },
+        { "kind": "label", "text": "Сайт студии - серверные интеграции | 2026" },
+        { "kind": "body", "text": "Опубликованный сайт услуг; бронирование выполняет DIKIDI, а сайт получает и проверяет прайс из внешнего источника." },
+        { "kind": "bullet", "text": "Обновлял цены каждые пять минут. При ошибке или неполном ответе сохранял последнюю проверенную версию с пометкой устаревания." },
+        { "kind": "bullet", "text": "Синхронизировал PDF без удаления прежней копии при сбое. Тестами проверил параллельные запросы, невалидные данные, отказ источника и восстановление после перезапуска." },
+        { "kind": "label", "text": "Поток событий и внешние API | 2026" },
+        { "kind": "body", "text": "Инструмент для приёма внешних событий и HTTP-данных с возможностью разбора после сбоя." },
+        { "kind": "bullet", "text": "В Rust записывал исходные события пакетами в сегментный журнал до декодирования; ограниченный канал сдерживает приём при перегрузке. Тесты проверяют порядок и переполнение." },
+        { "kind": "bullet", "text": "В Python-клиенте обработал 429/Retry-After, паузы по источникам и восстановление отложенных запросов после перезапуска. Тесты проверяют независимость источников." },
+        { "kind": "label", "text": "Antiplag - дипломный проект | 2026" },
+        { "kind": "body", "text": "Дипломный прототип для загрузки документов по группам; алгоритм проверки оригинальности не реализован." },
+        { "kind": "bullet", "text": "На Bun/Hono сделал загрузку PDF, DOC, DOCX и TXT с проверкой типа и размера, метаданные в PostgreSQL и маршруты документов с проверками роли и владельца." },
+        { "kind": "bullet", "text": "Разделил авторизацию, документы и группы на модули, реализовал замену refresh-токена и связал API с React-интерфейсом." },
+        { "kind": "label", "text": "WindowsTweaker - системный инструмент | 2026" },
+        { "kind": "body", "text": "Личная C#/.NET 10 и WPF утилита для диагностики настроек Windows." },
+        { "kind": "bullet", "text": "Сделал план без записи с проверкой применимости к редакции и сборке ОС; неизвестное состояние показано явно. Отдельно реализовал и тестировал журналируемый механизм применения, проверки и отката; интерфейс оставил диагностическим." },
+        { "kind": "heading", "text": "Навыки" },
+        { "kind": "body", "text": "Backend и данные: TypeScript, Bun/Hono, Node.js, Python, PostgreSQL, SQL, HTTP API." },
+        { "kind": "body", "text": "Системная разработка: Rust, C#/.NET, WPF, файловые журналы, диагностика." },
+        { "kind": "body", "text": "Проверка и запуск: автоматические тесты, GitHub Actions, Docker Compose, Git." },
+        { "kind": "heading", "text": "Образование" },
+        { "kind": "body", "text": "СПбПУ Петра Великого, 2026. Среднее профессиональное образование, информационные системы и программирование." }
       ]
     },
     "en": {
-      "document_title": "Vladislav Kalashnikov Resume",
+      "document_title": "Vladislav Kalashnikov Backend Developer Resume",
       "language_tag": "en-US",
       "blocks": [
-        {
-          "kind": "name",
-          "text": "Vladislav Kalashnikov"
-        },
-        {
-          "kind": "role",
-          "text": "Backend Developer - Python / TypeScript"
-        },
-        {
-          "kind": "contacts",
-          "text": "Saint Petersburg  |  kalashnikov78ru@gmail.com"
-        },
-        {
-          "kind": "contacts",
-          "text": "https://t.me/huteex  |  https://github.com/huteeex"
-        },
-        {
-          "kind": "heading",
-          "text": "About"
-        },
-        {
-          "kind": "body",
-          "text": "I write backends for web applications in Python and TypeScript. I have worked on request management, service booking, document handling and Telegram bots. I design databases, build APIs and connect them to the frontend."
-        },
-        {
-          "kind": "heading",
-          "text": "Skills"
-        },
-        {
-          "kind": "body",
-          "text": "Main stack: Python, Django, Django REST Framework, TypeScript, Node.js, PostgreSQL, SQL."
-        },
-        {
-          "kind": "body",
-          "text": "Deployment tools: Docker, Docker Compose, Nginx, Git."
-        },
-        {
-          "kind": "body",
-          "text": "Also worked with Go, C#, React, Next.js and Socket.io."
-        },
-        {
-          "kind": "heading",
-          "text": "Project experience"
-        },
-        {
-          "kind": "bullet",
-          "text": "APIs and access: built registration, authentication, user accounts and admin panels. Set up role-based permissions and JWT token refresh."
-        },
-        {
-          "kind": "bullet",
-          "text": "Databases: designed PostgreSQL tables and relationships. Wrote search and filter queries, and SQL functions for pricing and commission calculations. Added sales and stock tracking to a store management application."
-        },
-        {
-          "kind": "bullet",
-          "text": "Documents: built file uploads and metadata storage. Linked documents to users and groups, and added API endpoints for managing records."
-        },
-        {
-          "kind": "bullet",
-          "text": "Service booking: built schedules, staff and time selection, and booking statuses. Added an admin panel for managing services, clients and bookings."
-        },
-        {
-          "kind": "bullet",
-          "text": "Bots and integrations: wrote Telegram bots in Python and Go, command handlers and automated replies. Connected external APIs, and set up notifications and messaging through Socket.io."
-        },
-        {
-          "kind": "bullet",
-          "text": "Deployment and maintenance: prepared applications for launch with Docker and Nginx. Maintained small-business websites, fixed forms and page layouts across screen sizes."
-        },
-        {
-          "kind": "heading",
-          "text": "Education"
-        },
-        {
-          "kind": "body",
-          "text": "Peter the Great St. Petersburg Polytechnic University, 2026. Secondary vocational education in Information Systems and Programming."
-        },
-        {
-          "kind": "heading",
-          "text": "Languages"
-        },
-        {
-          "kind": "body",
-          "text": "Russian - native."
-        }
+        { "kind": "name", "text": "Vladislav Kalashnikov" },
+        { "kind": "role", "text": "Backend Developer" },
+        { "kind": "contacts", "text": "Saint Petersburg  |  kalashnikov78ru@gmail.com" },
+        { "kind": "contacts", "text": "https://t.me/huteex  |  https://github.com/huteeex" },
+        { "kind": "heading", "text": "Profile" },
+        { "kind": "body", "text": "I build APIs and integrations for web services. My diploma project covered document uploads and access checks; for a live studio site, I built price and PDF sync with fallback when the source fails. My own tools cover event journaling and Windows diagnostics." },
+        { "kind": "heading", "text": "Selected work" },
+        { "kind": "label", "text": "Studio website - server-side integrations | 2026" },
+        { "kind": "body", "text": "A live service website. DIKIDI handles bookings; the site fetches and validates prices from an external source." },
+        { "kind": "bullet", "text": "Refreshed prices every five minutes. On an error or partial response, the site retains the last verified version and marks it stale." },
+        { "kind": "bullet", "text": "Synchronized PDFs without deleting the prior copy on failure. Tests cover concurrent requests, invalid data, source failures and restart recovery." },
+        { "kind": "label", "text": "Event processing and external APIs | 2026" },
+        { "kind": "body", "text": "A tool for receiving external events and HTTP data with replay after an interruption." },
+        { "kind": "bullet", "text": "In Rust, I batched raw events into a segmented journal before decoding them; a bounded channel slows ingestion under load. Tests cover order and overflow." },
+        { "kind": "bullet", "text": "In the Python client, I handled 429/Retry-After, per-source cooldowns and deferred work that survives restarts. Tests verify that sources remain independent." },
+        { "kind": "label", "text": "Antiplag - diploma project | 2026" },
+        { "kind": "body", "text": "A diploma prototype for coursework documents and groups; the originality-checking algorithm is not implemented." },
+        { "kind": "bullet", "text": "Built Bun/Hono uploads for PDF, DOC, DOCX and TXT with type and size checks, PostgreSQL metadata, and document routes with role and owner checks." },
+        { "kind": "bullet", "text": "Separated authentication, documents and groups into modules, implemented refresh-token rotation and connected the API to a React UI." },
+        { "kind": "label", "text": "WindowsTweaker - system utility | 2026" },
+        { "kind": "body", "text": "A personal C#/.NET 10 and WPF utility for diagnosing Windows settings." },
+        { "kind": "bullet", "text": "Built a no-write plan that checks applicability to the Windows edition and build and shows unknown states explicitly. Separately developed and tested a journaled apply, verify and restore engine; the UI remains diagnostic." },
+        { "kind": "heading", "text": "Skills" },
+        { "kind": "body", "text": "Backend and data: TypeScript, Bun/Hono, Node.js, Python, PostgreSQL, SQL, HTTP APIs." },
+        { "kind": "body", "text": "Systems: Rust, C#/.NET, WPF, file journals and diagnostics." },
+        { "kind": "body", "text": "Testing and delivery: automated tests, GitHub Actions, Docker Compose, Git." },
+        { "kind": "heading", "text": "Education" },
+        { "kind": "body", "text": "Peter the Great St. Petersburg Polytechnic University, 2026. Secondary vocational education in Information Systems and Programming." }
       ]
     }
   }

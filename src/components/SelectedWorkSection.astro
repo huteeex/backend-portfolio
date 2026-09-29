@@ -1,0 +1,50 @@
+---
+import { works } from '../data/work';
+import type { Lang } from '../data/content';
+import Icon from './Icon.astro';
+import '../styles/selected-work.css';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const root = en ? '/en/' : '/';
+const [featured, ...more] = works[lang];
+---
+
+<section class="selected-work-section page-width" id="experience" aria-labelledby="experience-title">
+  <span id="code" class="legacy-anchor" aria-hidden="true"></span>
+  <div class="section-heading selected-work-heading">
+    <h2 id="experience-title">{en ? 'Selected work' : 'Избранные работы'}<span class="item-count">{String(works[lang].length).padStart(2, '0')}</span></h2>
+    <span class="section-aside">{en ? 'What the work involved' : 'Что делал и с чем столкнулся'}</span>
+  </div>
+
+  <a class="featured-work" href={`${root}work/${featured.slug}/`} aria-label={`${en ? 'Read case study' : 'Читать разбор'}: ${featured.name}`}>
+    <div class="featured-copy">
+      <div class="work-meta"><span>01 / {featured.kind}</span><span>{featured.category}</span></div>
+      <h3>{featured.name}</h3>
+      <p class="featured-context">{featured.context}</p>
+      <div class="featured-points">
+        <div><span>{en ? 'My work' : 'Моя работа'}</span><p>{featured.responsibility}</p></div>
+        <div><span>{en ? 'The hard part' : 'Сложность'}</span><p>{featured.challenge}</p></div>
+      </div>
+      <span class="work-read">{en ? 'Read the case' : 'Разобрать работу'}<Icon name="arrow" size={16} /></span>
+    </div>
+    <div class="featured-visual" aria-hidden="true">
+      <div class="visual-paper"><span class="visual-topline">DOCUMENT / API</span><span class="visual-line visual-line-one"></span><span class="visual-line visual-line-two"></span><span class="visual-line visual-line-three"></span><span class="visual-stamp">{en ? 'access' : 'доступ'}</span></div>
+      <div class="visual-path"><span>upload</span><i></i><span>check</span><i></i><span>record</span></div>
+    </div>
+  </a>
+
+  <div class="supporting-work">
+    {more.map((project, index) => (
+      <a class="work-card" href={`${root}work/${project.slug}/`} aria-label={`${en ? 'Read case study' : 'Читать разбор'}: ${project.name}`}>
+        <div class="work-meta"><span>{String(index + 2).padStart(2, '0')} / {project.kind}</span><Icon name="diagonal" size={17} /></div>
+        <h3>{project.name}</h3>
+        <p class="work-context">{project.context}</p>
+        <div class="work-card-detail"><span>{en ? 'My work' : 'Моя работа'}</span><p>{project.responsibility}</p></div>
+        <div class="work-card-detail"><span>{en ? 'Challenge' : 'Сложность'}</span><p>{project.challenge}</p></div>
+        <span class="work-card-link">{en ? 'Case study' : 'Разбор'}<Icon name="arrow" size={15} /></span>
+      </a>
+    ))}
+  </div>
+</section>

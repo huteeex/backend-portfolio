@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from './Icon.astro';
+import ProjectDemo from './ProjectDemo';
+import { projects, type Lang } from '../data/content';
+import '../styles/pages.css';
+import '../styles/lab.css';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const root = en ? '/en/' : '/';
+const work = projects[lang];
+---
+
+<Layout lang={lang} title={en ? 'Browser experiments - Vladislav Kalashnikov' : 'Эксперименты в браузере - Владислав Калашников'} section="lab">
+  <div class="lab-page page-width">
+    <a href={`${root}#about`} class="back-link"><Icon name="back" size={15} />{en ? 'Back to the portfolio' : 'Вернуться к портфолио'}</a>
+    <header class="lab-header"><span class="eyebrow">{en ? 'LAB' : 'ЛАБОРАТОРИЯ'}</span><h1>{en ? 'Browser experiments' : 'Эксперименты в браузере'}</h1><p>{en ? 'Small interactive models of workflows and backend ideas. These are browser-only concepts, separate from the completed work on the main page.' : 'Небольшие интерактивные модели рабочих сценариев и идей для серверной части. Это концепты, работающие только в браузере; выполненные работы собраны на главной.'}</p></header>
+    <section class="work-section" aria-labelledby="lab-work-title">
+      <div class="section-heading"><h2 id="lab-work-title">{en ? 'Experiments' : 'Эксперименты'}<span class="item-count">03</span></h2><span class="section-aside">{en ? 'Interactive demos' : 'Интерактивные демо'}</span></div>
+      <div class="project-grid">
+        {work.map((project, index) => <article class:list={['project-card', `project-card-${project.slug}`, { 'project-card-wide': index === 2 }]}>
+          <div class="project-stage"><ProjectDemo kind={project.slug} lang={lang} client:visible /></div>
+          <div class="project-caption"><div class="project-caption-top"><span class="project-category">{project.category}</span><span class="concept-tag">{en ? 'Concept' : 'Концепт'}</span></div><a class="project-link" href={`${root}projects/${project.slug}/`}><h3>{project.title}</h3><span class="project-arrow"><Icon name="diagonal" size={19} /></span></a><p>{project.summary}</p>{index === 2 && <a class="text-link project-read" href={`${root}projects/${project.slug}/`}>{en ? 'Behind the system' : 'Как это устроено'}<Icon name="arrow" size={16} /></a>}</div>
+        </article>)}
+      </div>
+      <p class="collection-note"><span class="note-mark">↳</span>{en ? 'The buttons run local demos. Each page explains the proposed backend.' : 'Кнопки запускают демо в браузере. На страницах разбираю предложенную серверную часть.'}</p>
+    </section>
+  </div>
+</Layout>
